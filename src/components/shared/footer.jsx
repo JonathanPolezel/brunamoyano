@@ -1,6 +1,6 @@
 // src/components/shared/Footer.jsx
 import React from 'react';
-import { Github, Linkedin, Mail, ArrowUp } from 'lucide-react';
+import { Linkedin, Mail, ArrowUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
@@ -15,15 +15,6 @@ const Footer = () => {
       contact: 'Contato',
       location: 'São Vicente - SP, Brasil',
     },
-    en: {
-      quickLinks: 'Quick Links',
-      contact: 'Contact',
-      rights: 'All rights reserved',
-      home: 'Home',
-      experiences: 'Experiences',
-      contact: 'Contact',
-      location: 'São Vicente - SP, Brazil',
-    },
   };
 
   const currentLanguage = 'pt'; // ou 'en'
@@ -32,20 +23,23 @@ const Footer = () => {
 
   const quickLinks = [
     { href: '/', label: t.home },
-    { href: '/comercio', label: t.experiences },
+    { href: '/experiencia', label: t.experiences },
     { href: '/contato', label: t.contact },
   ];
 
   const socialLinks = [
-    { Icon: Github, href: 'https://github.com/JonathanPolezel', label: 'Github' },
-    { Icon: Linkedin, href: 'https://linkedin.com/in/jonathansouzamoyano', label: 'LinkedIn' },
-    { Icon: Mail, href: 'mailto:jsouza1993@gmail.com', label: 'Email' },
+    {
+      Icon: Linkedin,
+      href: 'https://www.linkedin.com/in/bruna-moyano-9a68a2226/',
+      label: 'LinkedIn',
+    },
+    { Icon: Mail, href: 'mailto:Bruka_moyano@hotmail.com', label: 'Email' },
   ];
 
   const contactInfo = {
     location: t.location,
-    email: 'jsouza1993@gmail.com',
-    phone: '+55 (13) 97412-4438',
+    email: 'Bruka_moyano@hotmail.com',
+    phone: '+55 (13) 97412-8143',
   };
 
   const scrollToTop = () => {

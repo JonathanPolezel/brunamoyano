@@ -24,7 +24,7 @@ const Navigation = ({ isOpen, onClose, currentPath }) => {
     {
       title: translations[currentLanguage].experiences,
       icon: <Briefcase className="h-5 w-5" />,
-      path: '/comercio',
+      path: '/experiencias',
     },
     {
       title: translations[currentLanguage].contact,

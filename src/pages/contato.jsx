@@ -160,7 +160,7 @@ const ContactPage = () => {
                 <Briefcase className="mr-2 h-4 w-4" /> Ver Experiência
               </Button>
             </Link>
-            <Link href="/curriculo.pdf" target="_blank">
+            <Link href="/bruna.pdf" target="_blank">
               <Button
                 variant="outline"
                 className="w-full border-purple-700 text-purple-300 hover:border-purple-500"

@@ -10,6 +10,13 @@ const HomePage = () => {
       <div className="mx-auto max-w-4xl text-center">
         {/* Hero Section */}
         <div className="space-y-6">
+          <div className="relative mx-auto h-40 w-40">
+            <img
+              src="/images/bruna.jpg"
+              alt="Bruna Lino Moyano"
+              className="h-full w-full rounded-full object-cover"
+            />
+          </div>
           <h1 className="bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-4xl font-bold text-transparent sm:text-5xl md:text-6xl">
             Bruna Lino Moyano
           </h1>
