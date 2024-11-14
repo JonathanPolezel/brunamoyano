@@ -18,7 +18,7 @@ const ContactPage = () => {
     email: 'Bruka_moyano@hotmail.com',
     phone: '(13) 97412-8143',
     location: 'São Vicente - SP',
-    whatsapp: '(13) 97412-4438',
+    whatsapp: '(13) 97412-8143',
     linkedin: 'linkedin.com/in/brunamoyano',
   };
 

@@ -31,6 +31,15 @@ const nextConfig = {
     '@radix-ui/react-toast',
     'lucide-react',
   ],
+
+  // Definição de alias para caminhos absolutos
+  webpack(config) {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': './src',
+    };
+    return config;
+  },
 };
 
 export default nextConfig;

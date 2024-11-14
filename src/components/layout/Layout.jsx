@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../shared/Header';
-import Footer from '../shared/footer';
-import Navigation from '../shared/navigation';
+import Navigation from '@/components/shared/navigation';
+import Header from '@/components/shared/Header';
+import Footer from '@/components/shared/footer';
 import { useRouter } from 'next/router';
 
 const Layout = ({ children }) => {
