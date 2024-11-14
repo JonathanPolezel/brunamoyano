@@ -3,6 +3,7 @@ import { Briefcase, BookOpen, Mail, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const HomePage = () => {
   return (
@@ -11,10 +12,12 @@ const HomePage = () => {
         {/* Hero Section */}
         <div className="space-y-6">
           <div className="relative mx-auto h-40 w-40">
-            <img
+            <Image
               src="/images/bruna.jpg"
               alt="Bruna Lino Moyano"
               className="h-full w-full rounded-full object-cover"
+              width={160}
+              height={160}
             />
           </div>
           <h1 className="bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-4xl font-bold text-transparent sm:text-5xl md:text-6xl">
