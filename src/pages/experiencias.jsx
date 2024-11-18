@@ -1,19 +1,5 @@
 import React, { useState } from 'react';
-import {
-  DollarSign,
-  Ship,
-  Globe,
-  Calculator,
-  Users,
-  ClipboardCheck,
-  BarChart,
-  Building2,
-  Calendar,
-  CheckCircle2,
-  TrendingUp,
-  Target,
-  Award,
-} from 'lucide-react';
+import { DollarSign, Ship, Globe, Calculator, Users, Building2, CheckCircle2 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -27,9 +13,6 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
   RadarChart,
   PolarGrid,
   PolarAngleAxis,
@@ -60,7 +43,7 @@ const experienceGrowthData = [
 const COLORS = ['#9333ea', '#a855f7', '#c084fc', '#d8b4fe', '#e9d5ff', '#f3e8ff'];
 
 // Componente de Card de Estatísticas Melhorado
-const StatCard = ({ stat, index }) => {
+const StatCard = ({ stat }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
