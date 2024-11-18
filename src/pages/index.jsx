@@ -34,7 +34,7 @@ const HomePage = () => {
                 Contato <Mail className="ml-2 h-4 w-4" />
               </Button>
             </Link>
-            <Link href="/comercio">
+            <Link href="/experiencias">
               <Button
                 variant="outline"
                 className="border-purple-700 text-purple-300 hover:border-purple-500"
