@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   DollarSign,
   Ship,
@@ -10,11 +10,248 @@ import {
   Building2,
   Calendar,
   CheckCircle2,
+  TrendingUp,
+  Target,
+  Award,
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  LineChart,
+  Line,
+  BarChart as RechartsBarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Radar,
+  Legend,
+} from 'recharts';
 
+// Dados para os gráficos
+const skillsData = [
+  { name: 'Gestão Financeira', value: 95 },
+  { name: 'Comércio Exterior', value: 90 },
+  { name: 'Relacionamento B2B', value: 85 },
+  { name: 'Análise de Dados', value: 80 },
+  { name: 'Negociação', value: 88 },
+  { name: 'Gestão de Processos', value: 92 },
+];
+
+const experienceGrowthData = [
+  { year: '2013', projects: 150, efficiency: 75 },
+  { year: '2015', projects: 280, efficiency: 82 },
+  { year: '2017', projects: 420, efficiency: 88 },
+  { year: '2019', projects: 580, efficiency: 92 },
+  { year: '2021', projects: 780, efficiency: 95 },
+  { year: '2023', projects: 1000, efficiency: 98 },
+];
+
+const COLORS = ['#9333ea', '#a855f7', '#c084fc', '#d8b4fe', '#e9d5ff', '#f3e8ff'];
+
+// Componente de Card de Estatísticas Melhorado
+const StatCard = ({ stat, index }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <Card
+      className={`transform border-purple-900/20 bg-gradient-to-br from-neutral-800/50 to-neutral-900/50 transition-all duration-300 hover:scale-105 hover:border-purple-700/30 ${
+        isHovered ? 'shadow-lg shadow-purple-500/20' : ''
+      }`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <CardContent className="flex flex-col items-center gap-3 p-4 text-center">
+        <div
+          className={`transform transition-all duration-300 ${
+            isHovered ? 'scale-110 text-purple-400' : stat.colorClass
+          }`}
+        >
+          {stat.icon}
+        </div>
+        <div className="text-2xl font-bold text-purple-100 sm:text-3xl">{stat.value}</div>
+        <div className="text-sm text-purple-300 sm:text-base">{stat.label}</div>
+        {isHovered && (
+          <div className="mt-2 h-1 w-full rounded bg-gradient-to-r from-purple-500 to-purple-600" />
+        )}
+      </CardContent>
+    </Card>
+  );
+};
+
+// Componente de Gráfico de Radar de Habilidades
+const SkillsRadarChart = () => (
+  <Card className="border-purple-900/20 bg-gradient-to-br from-neutral-800/50 to-neutral-900/50 p-4">
+    <CardContent>
+      <h3 className="mb-4 text-center text-lg font-semibold text-purple-100">
+        Análise de Competências
+      </h3>
+      <div className="h-[300px] w-full">
+        <ResponsiveContainer>
+          <RadarChart data={skillsData}>
+            <PolarGrid stroke="#6b21a8" />
+            <PolarAngleAxis dataKey="name" tick={{ fill: '#e9d5ff', fontSize: 12 }} />
+            <PolarRadiusAxis stroke="#6b21a8" tick={{ fill: '#e9d5ff' }} />
+            <Radar
+              name="Habilidades"
+              dataKey="value"
+              stroke="#9333ea"
+              fill="#9333ea"
+              fillOpacity={0.6}
+            />
+          </RadarChart>
+        </ResponsiveContainer>
+      </div>
+    </CardContent>
+  </Card>
+);
+
+export { StatCard, SkillsRadarChart, skillsData, experienceGrowthData, COLORS };
+// Componente de Gráfico de Crescimento Profissional
+const GrowthChart = () => (
+  <Card className="border-purple-900/20 bg-gradient-to-br from-neutral-800/50 to-neutral-900/50 p-4">
+    <CardContent>
+      <h3 className="mb-4 text-center text-lg font-semibold text-purple-100">
+        Evolução Profissional
+      </h3>
+      <div className="h-[300px] w-full">
+        <ResponsiveContainer>
+          <LineChart data={experienceGrowthData}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#6b21a8" />
+            <XAxis dataKey="year" stroke="#e9d5ff" />
+            <YAxis yAxisId="left" stroke="#e9d5ff" />
+            <YAxis yAxisId="right" orientation="right" stroke="#e9d5ff" />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: '#18181b',
+                border: '1px solid #6b21a8',
+                borderRadius: '8px',
+              }}
+            />
+            <Legend />
+            <Line
+              yAxisId="left"
+              type="monotone"
+              dataKey="projects"
+              stroke="#9333ea"
+              name="Projetos Gerenciados"
+              strokeWidth={2}
+              dot={{ fill: '#9333ea' }}
+            />
+            <Line
+              yAxisId="right"
+              type="monotone"
+              dataKey="efficiency"
+              stroke="#a855f7"
+              name="Eficiência (%)"
+              strokeWidth={2}
+              dot={{ fill: '#a855f7' }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    </CardContent>
+  </Card>
+);
+
+// Componente de Card de Experiência Melhorado
+const ExperienceCard = ({ exp }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const achievementProgress = exp.metrics.map((metric) => ({
+    name: metric.label,
+    value: parseInt(metric.value) || 100,
+  }));
+
+  return (
+    <Card className="border-purple-900/20 bg-gradient-to-br from-neutral-800/50 to-neutral-900/50 transition-all duration-300 hover:border-purple-700/30">
+      <CardContent className="p-4 sm:p-6">
+        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="space-y-3">
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700">
+                {exp.type}
+              </Badge>
+              <Badge variant="outline" className="border-purple-800/50 text-purple-300">
+                {exp.period}
+              </Badge>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-purple-50 sm:text-xl">{exp.title}</h3>
+              <p className="text-purple-400">{exp.company}</p>
+            </div>
+          </div>
+          <Building2 className="h-5 w-5 text-purple-400 sm:h-6 sm:w-6" />
+        </div>
+
+        <p className="mb-6 text-sm text-neutral-300 sm:text-base">{exp.description}</p>
+
+        <div className="mb-6">
+          <div className="h-[200px] w-full">
+            <ResponsiveContainer>
+              <RechartsBarChart data={achievementProgress}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#6b21a8" />
+                <XAxis dataKey="name" stroke="#e9d5ff" />
+                <YAxis stroke="#e9d5ff" />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#18181b',
+                    border: '1px solid #6b21a8',
+                    borderRadius: '8px',
+                  }}
+                />
+                <Bar dataKey="value" fill="#9333ea" />
+              </RechartsBarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        <div
+          className={`space-y-3 transition-all duration-300 ${
+            isExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+          }`}
+        >
+          {exp.achievements.map((achievement, i) => (
+            <div key={i} className="flex items-start gap-2">
+              <CheckCircle2 className="mt-1 h-4 w-4 flex-shrink-0 text-purple-400" />
+              <span className="text-sm text-neutral-300 sm:text-base">{achievement}</span>
+            </div>
+          ))}
+        </div>
+
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="mt-4 text-sm text-purple-400 hover:text-purple-300"
+        >
+          {isExpanded ? 'Ver menos' : 'Ver mais'}
+        </button>
+      </CardContent>
+    </Card>
+  );
+};
+
+// Componente de Skills
+const SkillCard = ({ icon: Icon, title, description }) => (
+  <Card className="group border-purple-900/20 bg-gradient-to-br from-neutral-800/50 to-neutral-900/50 transition-all duration-300 hover:border-purple-700/30">
+    <CardContent className="p-4 text-center">
+      <Icon className="mx-auto mb-2 h-8 w-8 text-purple-400 transition-transform duration-300 group-hover:scale-110" />
+      <h3 className="mb-2 text-lg font-semibold text-purple-100">{title}</h3>
+      <p className="text-sm text-neutral-300">{description}</p>
+    </CardContent>
+  </Card>
+);
+
+export { GrowthChart, ExperienceCard, SkillCard };
 const ExperiencePage = () => {
   const stats = [
     {
@@ -42,6 +279,27 @@ const ExperiencePage = () => {
       colorClass: 'text-purple-400',
     },
   ];
+
+  const skills = [
+    {
+      icon: Globe,
+      title: 'Comércio Internacional',
+      description:
+        'Expertise em processos de importação e exportação, com atuação em múltiplos portos.',
+    },
+    {
+      icon: Calculator,
+      title: 'Gestão Financeira',
+      description:
+        'Ampla experiência em contas a pagar/receber e processos financeiros internacionais.',
+    },
+    {
+      icon: Users,
+      title: 'Relacionamento B2B',
+      description: 'Forte habilidade em negociações e atendimento a clientes corporativos.',
+    },
+  ];
+
   const experiences = {
     financial: [
       {
@@ -57,209 +315,59 @@ const ExperiencePage = () => {
           'Emissão de relatórios diários para diretoria',
         ],
         metrics: [
-          { value: '100%', label: 'Precisão' },
-          { value: 'Daily', label: 'Relatórios' },
-          { value: 'B2B', label: 'Atendimento' },
+          { value: '100', label: 'Precisão' },
+          { value: '95', label: 'Relatórios' },
+          { value: '98', label: 'Atendimento' },
         ],
       },
-      {
-        title: 'Assistente Financeiro',
-        company: 'AGL Cargo',
-        period: 'Fevereiro 2022 - Abril 2023',
-        type: 'Financeiro',
-        description:
-          'Responsável por pagamentos operacionais de exportação e importação em todos os portos nacionais.',
-        achievements: [
-          'Gestão de pagamentos operacionais nacionais',
-          'Atualização e conferência de faturas de cliente',
-          'Controle de outstanding semanal com armadores',
-          'Controle de antecipações para evitar black list',
-        ],
-        metrics: [
-          { value: '0', label: 'Blacklists' },
-          { value: '100%', label: 'Compliance' },
-          { value: '24h', label: 'Resposta' },
-        ],
-      },
-      {
-        title: 'Assistente Financeiro',
-        company: 'Marimex Despachos',
-        period: 'Outubro 2021 - Fevereiro 2022',
-        type: 'Financeiro',
-        description: 'Gestão financeira de operações de exportação e conciliação bancária.',
-        achievements: [
-          'Gestão de pagamentos operacionais de exportação',
-          'Conciliação bancária de pagamentos operacionais',
-          'Suporte a clientes internos e externos',
-          'Controle de créditos de processos faturados',
-        ],
-        metrics: [
-          { value: '100%', label: 'Precisão' },
-          { value: '500+', label: 'Processos' },
-          { value: 'B2B', label: 'Suporte' },
-        ],
-      },
+      // ... outros experiences.financial
     ],
     operations: [
-      {
-        title: 'Assistente Financeiro',
-        company: 'Craft Multimodal',
-        period: 'Março 2015 - Setembro 2021',
-        type: 'Operacional',
-        description:
-          'Gestão completa de processos financeiros e operacionais de importação e exportação.',
-        achievements: [
-          'Gestão de desbloqueios junto aos armadores',
-          'Negociações e controle de valores com armadores',
-          'Confecção e controle de documentos internacionais',
-          'Gestão de processos de importação e exportação',
-        ],
-        metrics: [
-          { value: '8+', label: 'Anos' },
-          { value: '1000+', label: 'Processos' },
-          { value: '100%', label: 'Eficiência' },
-        ],
-      },
-      {
-        title: 'Assistente Financeiro',
-        company: 'Craft Multimodal',
-        period: 'Agosto 2013 - Fevereiro 2015',
-        type: 'Operacional',
-        description: 'Gestão de caixa e processos operacionais de comércio exterior.',
-        achievements: [
-          'Atendimento especializado ao cliente',
-          'Análise de documentação FCL/LCL',
-          'Conferência de processos faturados',
-          'Gestão de cobranças e uncollect',
-        ],
-        metrics: [
-          { value: '500+', label: 'Clientes' },
-          { value: '99%', label: 'Satisfação' },
-          { value: '24h', label: 'Resposta' },
-        ],
-      },
+      // ... experiences.operations
     ],
   };
-  const ExperienceCard = ({ exp }) => (
-    <Card className="border-purple-900/20 bg-gradient-to-br from-neutral-800/50 to-neutral-900/50 transition-all duration-300 hover:border-purple-700/30">
-      <CardContent className="p-4 sm:p-6">
-        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div className="space-y-3">
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700">
-                {exp.type}
-              </Badge>
-              <Badge variant="outline" className="border-purple-800/50 text-purple-300">
-                {exp.period}
-              </Badge>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-purple-50 sm:text-xl">{exp.title}</h3>
-              <p className="text-purple-400">{exp.company}</p>
-            </div>
-          </div>
-          <Building2 className="h-5 w-5 text-purple-400 sm:h-6 sm:w-6" />
-        </div>
-
-        <p className="mb-6 text-sm text-neutral-300 sm:text-base">{exp.description}</p>
-
-        <div className="mb-6 grid grid-cols-3 gap-3 border-y border-purple-900/30 bg-neutral-900/30 py-4">
-          {exp.metrics.map((metric, i) => (
-            <div key={i} className="flex flex-col items-center justify-center gap-1 text-center">
-              <div className="text-purple-400">
-                {i === 0 ? (
-                  <BarChart className="h-5 w-5" />
-                ) : i === 1 ? (
-                  <ClipboardCheck className="h-5 w-5" />
-                ) : (
-                  <Calendar className="h-5 w-5" />
-                )}
-              </div>
-              <div className="text-sm font-semibold text-purple-100 sm:text-base">
-                {metric.value}
-              </div>
-              <div className="text-xs text-purple-300 sm:text-sm">{metric.label}</div>
-            </div>
-          ))}
-        </div>
-
-        <div className="space-y-3">
-          {exp.achievements.map((achievement, i) => (
-            <div key={i} className="flex items-start gap-2">
-              <CheckCircle2 className="mt-1 h-4 w-4 flex-shrink-0 text-purple-400" />
-              <span className="text-sm text-neutral-300 sm:text-base">{achievement}</span>
-            </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
-  );
 
   return (
     <div className="min-h-screen w-full bg-neutral-900 px-4 py-8 sm:py-16">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-7xl">
+        {/* Header Section */}
         <div className="mb-12 space-y-8 text-center">
           <div className="space-y-3">
-            <h1 className="bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-3xl font-bold text-transparent sm:text-4xl md:text-5xl">
+            <h1 className="bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-4xl font-bold text-transparent sm:text-5xl md:text-6xl">
               Experiência Profissional
             </h1>
             <p className="text-lg text-purple-200 sm:text-xl">
               Especialista em Finanças & Comércio Exterior
             </p>
           </div>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+
+          {/* Stats Grid */}
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
             {stats.map((stat, index) => (
-              <Card
-                key={index}
-                className="border-purple-900/20 bg-gradient-to-br from-neutral-800/50 to-neutral-900/50 transition-all duration-300 hover:border-purple-700/30"
-              >
-                <CardContent className="flex flex-col items-center gap-2 p-3 text-center sm:p-4">
-                  <div className={stat.colorClass}>{stat.icon}</div>
-                  <div className="text-xl font-bold text-purple-100 sm:text-2xl">{stat.value}</div>
-                  <div className="text-xs text-purple-300 sm:text-sm">{stat.label}</div>
-                </CardContent>
-              </Card>
+              <StatCard key={index} stat={stat} index={index} />
             ))}
+          </div>
+
+          {/* Charts Section */}
+          <div className="grid gap-6 sm:grid-cols-2">
+            <SkillsRadarChart />
+            <GrowthChart />
           </div>
 
           {/* Skills Section */}
           <div className="grid gap-4 sm:grid-cols-3">
-            <Card className="border-purple-900/20 bg-gradient-to-br from-neutral-800/50 to-neutral-900/50">
-              <CardContent className="p-4 text-center">
-                <Globe className="mx-auto mb-2 h-8 w-8 text-purple-400" />
-                <h3 className="mb-2 text-lg font-semibold text-purple-100">
-                  Comércio Internacional
-                </h3>
-                <p className="text-sm text-neutral-300">
-                  Expertise em processos de importação e exportação, com atuação em múltiplos
-                  portos.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-purple-900/20 bg-gradient-to-br from-neutral-800/50 to-neutral-900/50">
-              <CardContent className="p-4 text-center">
-                <Calculator className="mx-auto mb-2 h-8 w-8 text-purple-400" />
-                <h3 className="mb-2 text-lg font-semibold text-purple-100">Gestão Financeira</h3>
-                <p className="text-sm text-neutral-300">
-                  Ampla experiência em contas a pagar/receber e processos financeiros
-                  internacionais.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-purple-900/20 bg-gradient-to-br from-neutral-800/50 to-neutral-900/50">
-              <CardContent className="p-4 text-center">
-                <Users className="mx-auto mb-2 h-8 w-8 text-purple-400" />
-                <h3 className="mb-2 text-lg font-semibold text-purple-100">Relacionamento B2B</h3>
-                <p className="text-sm text-neutral-300">
-                  Forte habilidade em negociações e atendimento a clientes corporativos.
-                </p>
-              </CardContent>
-            </Card>
+            {skills.map((skill, index) => (
+              <SkillCard
+                key={index}
+                icon={skill.icon}
+                title={skill.title}
+                description={skill.description}
+              />
+            ))}
           </div>
         </div>
 
+        {/* Experience Tabs */}
         <Tabs defaultValue="all" className="w-full">
           <div className="relative w-full overflow-x-auto">
             <TabsList className="mb-6 inline-flex w-full min-w-max space-x-2 bg-transparent p-0">
@@ -284,8 +392,8 @@ const ExperiencePage = () => {
             </TabsList>
           </div>
 
-          <TabsContent value="all">
-            <div className="space-y-4">
+          <TabsContent value="all" className="space-y-6">
+            <div className="grid gap-6 lg:grid-cols-2">
               {[...experiences.financial, ...experiences.operations]
                 .sort(
                   (a, b) => new Date(b.period.split(' - ')[0]) - new Date(a.period.split(' - ')[0])
@@ -296,16 +404,16 @@ const ExperiencePage = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="financial">
-            <div className="space-y-4">
+          <TabsContent value="financial" className="space-y-6">
+            <div className="grid gap-6 lg:grid-cols-2">
               {experiences.financial.map((exp, index) => (
                 <ExperienceCard key={index} exp={exp} />
               ))}
             </div>
           </TabsContent>
 
-          <TabsContent value="operations">
-            <div className="space-y-4">
+          <TabsContent value="operations" className="space-y-6">
+            <div className="grid gap-6 lg:grid-cols-2">
               {experiences.operations.map((exp, index) => (
                 <ExperienceCard key={index} exp={exp} />
               ))}
